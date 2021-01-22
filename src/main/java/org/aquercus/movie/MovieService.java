@@ -43,4 +43,20 @@ public class MovieService {
                 );
         return get(movie.getImdbId());
     }
+
+    @PutMapping("/movies/{id}")
+    public MovieModel replace(@RequestBody MovieModel movie,@PathVariable("id") String id ){
+        jdbcTemplate.update(
+                "update movies set title = ?, year = ?, rating = ? where imdb_id = ?",
+                 movie.getTitle(), movie.getYear(), movie.getRating(), id
+        );
+        return get(id);
+    }
+
+    @DeleteMapping("/movies/{id}")
+    public void delete(@PathVariable("id") String id ){
+        jdbcTemplate.update(
+                "delete from movies where imdb_id = ?", id);
+
+    }
 }
